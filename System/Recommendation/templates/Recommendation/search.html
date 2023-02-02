@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>图书搜索页面</title>
+    </head>
+    <body>
+        <h1>图书搜索</h1>
+        {% if err_msg %}
+        <div>{{ err_msg }}</div>
+            {% if book_found %}
+                <li><a href="/recommendation/book/{{ book_found.id }}">{{ book_found.bookname }}</a></li>
+            {% endif %}
+        {% endif %}
+        <form method="get">
+            书名：<input type="text" name="name"><br>
+            <input type="submit" value="提交">
+        </form>
+    </body>
+</html>

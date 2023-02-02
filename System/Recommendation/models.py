@@ -1,5 +1,7 @@
 from django.db import models
 
+from Account.models import PlatformUser
+
 # Create your models here.
 
 __all__ = [
@@ -7,6 +9,7 @@ __all__ = [
     "Book",
     "Book_Tag",
     "Tags",
+    "SearchRecord"
 ]
 
 Tags = [
@@ -158,6 +161,19 @@ class Book(models.Model):
         return self.bookname
     
 
+class SearchRecord(models.Model):
+    searcher : PlatformUser = models.ForeignKey(
+        PlatformUser, on_delete=models.CASCADE, 
+        related_name='searcher', default=None, null=True, blank=True
+        )
+    search_tag = models.IntegerField(
+        choices=Tags,
+        blank=True,
+        default=None,
+    )
+    search_cont = models.CharField(max_length=50)
+    search_time = models.DateTimeField("搜索时间")
+    
     
 
         
