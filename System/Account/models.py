@@ -45,21 +45,7 @@ class PlatformUser(models.Model):
 
     major = models.SmallIntegerField("专业", choices=Major.choices, default=Major.OTHERS)
 
-    class BOOK_TYPE(models.IntegerChoices):
-        FICTION = (0, "小说、散文及其他文学作品")
-        SOCIAL = (1, "社会学")
-        POLITICAL = (2, "政治学")
-        HISTORY = (3, "历史学")
-        MATH = (4, "数学")
-        PHYSICS = (5, "物理学")
-        CHEMISTRY = (6, "化学")
-        BIOLOGY = (7, "生物学")
-        COMPUTER = (8, "计算机科学")
-        PHILOSOPHY = (9, "哲学")
-        PHYCHOLOGY = (10, "心理学")
-        OTHERS = (11, "其他")
-
-    type_preference = models.SmallIntegerField("书籍类型偏好", choices=BOOK_TYPE.choices)
+    type_preference = models.ManyToManyField(to="Recommendation.Book_Tag", verbose_name="书籍类型偏好")
     
     def __str__(self) -> str:
         return self.nickname
@@ -75,3 +61,4 @@ class PlatformUser(models.Model):
     def get_display_name(self) -> str:
         '''User一对一模型的必要方法'''
         return self.nickname
+

@@ -5,13 +5,14 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.utils import IntegrityError
-
+from Recommendation.models import Book_Tag
 
 # Create your views here.
 def UserRegister(request: HttpRequest):
     """ User Register Function
     TODO: redirect after being registered
     """
+    Tags = Book_Tag.objects.all()
     if request.method == "POST" and request.POST:
         name = request.POST["name"] # username
         password1 = request.POST["password1"] # password1
@@ -19,7 +20,8 @@ def UserRegister(request: HttpRequest):
         nickname = request.POST["nickname"] # nickname
         gender = request.POST["gender"] # sex
         major = request.POST["major"] # major
-        type_preference = request.POST["type_preference"] # book type preference
+        type = request.POST.getlist("type")
+        print(request.POST)
         err_msg = "成功注册！请跳转至/login/登录页面进行登录"
 
         if password1 != password2: # check password
@@ -40,17 +42,21 @@ def UserRegister(request: HttpRequest):
                     nickname=nickname,
                     gender=list(filter((lambda x: x[1]==gender), PlatformUser.Gender.choices))[0][0],
                     major=list(filter((lambda x: x[1]==major), PlatformUser.Major.choices))[0][0],
-                    type_preference=list(filter((lambda x: x[1]==type_preference), PlatformUser.BOOK_TYPE.choices))[0][0]
                 ) 
         except IntegrityError: # If exists
             user.delete()
             err_msg = "该昵称已存在！"
             return render(request, "register.html", locals())
+        for tag in type:
+            print(tag)
+            platform_user.type_preference.add(Book_Tag.objects.get(book_tag=tag))
+        
+        platform_user.save()
         
         return render(request, "register.html", locals())
 
     else:
-        return render(request, "register.html")
+        return render(request, "register.html", locals())
 
 def UserLogin(request: HttpRequest):
     """ User Login Function
