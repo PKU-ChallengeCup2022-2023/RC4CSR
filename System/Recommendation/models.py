@@ -7,6 +7,7 @@ from Account.models import PlatformUser
 __all__ = [
     "PlatformUser",
     "Book",
+    "Book_Tag",
     "Tags",
     "SearchRecord"
 ]
@@ -136,6 +137,15 @@ Tags = [
             )
          ),
     ]
+
+class Book_Tag(models.Model):
+    class Meta:
+        verbose_name = "书籍类型"
+        verbose_name_plural = verbose_name
+    
+    book_tag = models.CharField("标签", max_length=20, null=True)
+    def __str__(self):
+        return self.book_tag
 
 class Book(models.Model):
     bookname = models.CharField(max_length=50)

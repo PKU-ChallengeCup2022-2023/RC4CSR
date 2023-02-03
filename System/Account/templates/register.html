@@ -32,19 +32,9 @@
             <input type="radio" name="major" value="哲学">哲学<br>
             <input type="radio" name="major" value="其他">其他<br>
             书籍类型偏好:<br>
-            <input type="radio" name="type_preference" value="小说、散文及其他文学作品">小说、散文及其他文学作品<br>
-            <input type="radio" name="type_preference" value="社会学">社会学<br>
-            <input type="radio" name="type_preference" value="政治学">政治学<br>
-            <input type="radio" name="type_preference" value="历史学">历史学<br>
-            <input type="radio" name="type_preference" value="数学">数学<br>
-            <input type="radio" name="type_preference" value="物理学">物理学<br>
-            <input type="radio" name="type_preference" value="化学">化学<br>
-            <input type="radio" name="type_preference" value="生物学">生物学<br>
-            <input type="radio" name="type_preference" value="计算机科学">计算机科学<br>
-            <input type="radio" name="type_preference" value="心理学">心理学<br>
-            <input type="radio" name="type_preference" value="哲学">哲学<br>
-            <input type="radio" name="type_preference" value="其他">其他<br>
-
+            {% for tag in Tags %}
+            <input type="checkbox" name="type" value="{{ tag.book_tag }}">{{ tag.book_tag }}<br>
+            {% endfor %}
             <input type="submit" value="提交">
         </form>
     </body>

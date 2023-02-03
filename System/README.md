@@ -1,5 +1,6 @@
 # The main structure of this project
 functionalities are divided into System, Recommendation, Discussion and Writing
+tips: Before run, ensure that you have already executed "python manage.py shell < default.py" in the command line
 ## System
 welcome（TODO)  
 register  
