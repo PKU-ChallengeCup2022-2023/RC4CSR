@@ -5,7 +5,6 @@ from Account.models import PlatformUser
 # Create your models here.
 
 __all__ = [
-    "PlatformUser",
     "Book",
     "Book_Tag",
     "Tags",

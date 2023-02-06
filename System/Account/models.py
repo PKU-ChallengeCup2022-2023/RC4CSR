@@ -5,8 +5,6 @@ from django.contrib.auth.models import User
 
 __all__ = [
     "PlatformUser",
-    "Book",
-    "Topic",
 ]
 
 class PlatformUserManager(models.Manager):
