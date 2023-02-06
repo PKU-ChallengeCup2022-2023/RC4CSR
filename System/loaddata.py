@@ -1,5 +1,5 @@
 from Recommendation.models import Book
-with open('data/book_info_all.txt') as fd:
+with open('data/book_info_all.txt', encoding='utf-8') as fd:
     for line in fd:
         data_list = line.rstrip('\n').split(',')
         Book.objects.create(

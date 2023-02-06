@@ -1,14 +1,15 @@
 # The main structure of this project
-functionalities are divided into System, Recommendation, Discussion and Writing
-tips: Before run, ensure that you have already executed "python manage.py shell < default.py" in the command line
-## System
-welcome（TODO)  
-register  
-login  
-user page  
+functionalities are divided into Account, Recommendation, Discussion and Writing  
+# How to install this system  
+1. download source code from our latest Github repo  
+2. create virtual environment in accord with freeze.yml, then activate it  
+3. open a shell from current folder, type command : 'cd System'  
+4. type following commands to build your database: 'py manage.py makemigrations' & 'py manage.py migrate' & 'py manage.py shell < default.py'. Then you are supposed to see db.sqlite3 in System/  
+5. add foader 'data/', then load book data in txt file 'book_info_all.txt'(only provided to group members now)  
+6. type command in shell: 'py manage.py shell < loaddata.py'  
+7. at last, type command 'py manage.py runserver' to run the server  
 ## Account
 ### model: PlatformUser
-
 ### web page: Account.register
 ### web page: Account.login
 ### web page: Account.user_page
@@ -17,7 +18,13 @@ user page
 offer recommendations to users based on their behaviors and other info  
 recieving results from model ML  
 ### model: Book  
-### model: Topic
+### model: BookTag  
+### model: SearchRecord
+### web page: Recommendation.search  
+you can search for a book in database by its title  
+your search records will be kept for recommendation optimization  
+### web page: Recommendation.book
+basic information of a book is provided here   
 ## Discussion
 discussion zone & groups  
 ### discussion zone
@@ -26,13 +33,13 @@ showing groups of different topics or books
 members of the group can post comments about its topic or book  
 ### model: discRecord
 key design for discussion zone  
-allowing group members to post comments, reply to other comments and give likes  
+allowing group members to post comments, reply to other comments(TODO) and give likes(TODO)  
 ### web page: Discussion.index  
 displaying groups  
 ### web page: Discussion.detail  
 showing discussions after entering a group  
 ### web page: Discussion.register
-register a discgroup
+user can register a discgroup on this web page  
 ## Writing
 post pencrafts and comment pencrafts   
 ### model: Pencraft
