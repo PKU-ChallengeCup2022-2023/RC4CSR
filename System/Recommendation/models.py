@@ -142,7 +142,7 @@ class Book_Tag(models.Model):
     class Meta:
         verbose_name = "书籍类型"
         verbose_name_plural = verbose_name
-    
+    tag_id = models.IntegerField("id", null=True, unique=True)
     book_tag = models.CharField("标签", max_length=20, null=True)
     def __str__(self):
         return self.book_tag
@@ -156,7 +156,17 @@ class Book(models.Model):
         blank=True,
         default=None,
     )
-    
+    url = models.CharField(max_length=200, blank=True)
+    publisher = models.CharField(max_length=50, blank=True)
+    publish_time = models.CharField(max_length=20, blank=True)
+    comment_num = models.IntegerField(null=True)
+    score = models.DecimalField(max_digits=3, decimal_places=1, null=True)
+    percent_5 = models.DecimalField(max_digits=4, decimal_places=3, null=True)
+    percent_4 = models.DecimalField(max_digits=4, decimal_places=3, null=True)
+    percent_3 = models.DecimalField(max_digits=4, decimal_places=3, null=True)
+    percent_2 = models.DecimalField(max_digits=4, decimal_places=3, null=True)
+    percent_1 = models.DecimalField(max_digits=4, decimal_places=3, null=True)
+
     def __str__(self) -> str:
         return self.bookname
     
