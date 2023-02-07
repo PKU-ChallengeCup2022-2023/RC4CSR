@@ -1,13 +1,16 @@
 # The main structure of this project
 functionalities are divided into Account, Recommendation, Discussion and Writing  
-# How to install this system  
+## How to install this system  
 1. download source code from our latest Github repo  
 2. create virtual environment in accord with freeze.yml, then activate it  
 3. open a shell from current folder, type command : 'cd System'  
-4. type following commands to build your database: 'py manage.py makemigrations' & 'py manage.py migrate' & 'py manage.py shell < default.py'. Then you are supposed to see db.sqlite3 in System/  
+4. type following commands to build your database: 'py manage.py makemigrations {app name}' & 'py manage.py migrate' & 'py manage.py shell < default.py'. Then you are supposed to see db.sqlite3 in System/  
 5. add foader 'data/', then load book data in txt file 'book_info_all.txt'(only provided to group members now)  
 6. type command in shell: 'py manage.py shell < loaddata.py'  
 7. at last, type command 'py manage.py runserver' to run the server  
+### Tips:
+1. if something goes wrong when making and applying migrations, please try to delete all migrations/ first  
+2. if the shell you use is cmd, it may fail at step5&6(shell command). Just type 'py manage.py shell' to open py shell, paste code in py files, then type enter instead. It's supposed to print abundant objects if successful.  
 ## Account
 ### model: PlatformUser
 ### web page: Account.register

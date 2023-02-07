@@ -23,4 +23,9 @@ __pycache__/
 *.sql
 *.sqlite
 *.sqlite3
+
+# Data #
 data/
+
+# Too large files #
+ML/VAE_RD_2_3_512_1024__.data-00000-of-00001
