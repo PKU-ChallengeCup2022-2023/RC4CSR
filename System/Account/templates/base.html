@@ -1,7 +1,26 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
     <head>
-
+        <style>
+            .sidebar{
+                display: block;
+                margin-top: 50px;
+                /*设置长度与宽度 */
+                width: 150px;
+                height: 80px;
+                /* 设置背景颜色 */
+                background-color: #76bbe8;
+                /* 设置字体大小 */
+                font-size: 14px;
+                /* 设置字体颜色 */
+                color: #fff;
+                /* 链接没有下划线 */
+                text-decoration: none;
+                /* 设置左边的内边距 */
+                padding-left: 30px;
+                line-height: 40px;
+            }
+        </style>
     </head>
     <body>
         <div class="main-document-header-container">
@@ -14,7 +33,13 @@
                     <a href="/account/login/">重新登录</a> <a href="/account/logout/">退出登录</a>
                 </div>
             </div>
-
+        </div>
+        <div class="sidebar">
+            <ul>
+                <li><a href="/discussion">讨论区</a></li>
+                <li><a href="/writing">创作区</a></li>
+            </ul>
+        </div>
         {% block mainpage %}
         {% endblock mainpage %}
     </body>
