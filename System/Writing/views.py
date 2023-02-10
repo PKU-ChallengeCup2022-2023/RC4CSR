@@ -9,17 +9,20 @@ from Account.models import PlatformUser
 
 @login_required(redirect_field_name='login')
 def index(request):
+    platform_user = PlatformUser.objects.get(uid=request.user)
     pencraft_list = Pencraft.objects.order_by('-pub_date')
     return render(request, 'Writing/index.html', locals())
 
 @login_required(redirect_field_name='login')
 def pencraft(request, pencraft_id):
+    platform_user = PlatformUser.objects.get(uid=request.user)
     pencraft = get_object_or_404(Pencraft, pk=pencraft_id)
     chapter_set = Chapter.objects.filter(collection=pencraft)
     return render(request, 'Writing/pencraft.html', locals())
 
 @login_required(redirect_field_name='login')
 def chapter(request, pencraft_id, chapter_id):
+    platform_user = PlatformUser.objects.get(uid=request.user)
     chapter = get_object_or_404(Chapter, pk=chapter_id)
     return render(request, 'Writing/chapter.html', locals())
 

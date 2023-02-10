@@ -1,3 +1,6 @@
+{% extends 'base.html' %}
+{% block mainpage %}
 <h1>{{ chapter.chap_name }}</h1>
 <h2>{{ chapter.pub_date}} </h2>
 {{ chapter.text }}
+{% endblock mainpage %}
