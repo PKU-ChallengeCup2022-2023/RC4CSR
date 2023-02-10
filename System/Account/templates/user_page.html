@@ -1,17 +1,15 @@
 {% extends 'base.html' %}
 {% block mainpage %}
-<head>
-    <meta charset="utf-8">
-    <title>用户页面</title>
-</head>
-<body>
-    {% if platform_user.nickname %}
-    <h1>You're looking at {{ platform_user.nickname }}</h1>
-    {% endif %}
-    <form method="post">{% csrf_token %}
-        <input type="submit" value="登出">
-    </form>
-    <a href="/discussion/register/">创建讨论组</a>
-</body>
+
+        {% if platform_user.nickname %}
+        <h1>尊敬的用户{{ platform_user.nickname }}，</h1>
+        <h1>欢迎来到您的用户主页！</h1>
+        {% endif %}
+        <form method="post">{% csrf_token %}
+            <input type="submit" value="登出">
+        </form>
+        <a href="/discussion/register/">创建讨论组</a>
+
+
 {% endblock mainpage %}
     
