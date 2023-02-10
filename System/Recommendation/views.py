@@ -11,7 +11,7 @@ from Account.models import PlatformUser
 @login_required(redirect_field_name='login')
 def index(request):
     platform_user = PlatformUser.objects.get(uid=request.user)
-    
+    book_list= []
     return render(request, 'Recommendation/index.html', locals())
 
 

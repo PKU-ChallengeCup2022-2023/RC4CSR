@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% block mainpage %}
 <h1>{{platform_user.nickname}}</h1>
 <h2>Start your new chapter!</h2>
 {% if err_msg %}
@@ -18,3 +20,4 @@
         <p>No pencrafts are available.</p>
     {% endif %}
 </form>
+{% endblock mainpage %}

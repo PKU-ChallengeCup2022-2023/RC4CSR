@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% block mainpage %}
 <h1>{{ group.groupName }}</h1>
 <ul>
     {% if err_msg %}
@@ -17,3 +19,4 @@
     <input type="submit" value="提交">
 </form>
 </ul>
+{% endblock mainpage%}

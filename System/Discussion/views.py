@@ -13,14 +13,15 @@ from .models import DiscGroup, DiscRecord
 
 @login_required(redirect_field_name="login")
 def index(request):
+    platform_user = PlatformUser.objects.get(uid=request.user)
     latest_group_list = DiscGroup.objects.order_by('-found_time')
-    context = {'latest_group_list': latest_group_list}
-    return render(request, 'Discussion/index.html', context)
+    return render(request, 'Discussion/index.html', locals())
 
 @login_required(redirect_field_name="login")
 def detail(request: HttpRequest, group_id):
     group = get_object_or_404(DiscGroup, pk=group_id)
     records = DiscRecord.objects.filter(belong_to=group)
+    platform_user = PlatformUser.objects.get(uid=request.user)
     
     if request.method == "POST" and request.POST:
         #TODO: likes & reply_to
@@ -54,6 +55,7 @@ def check_same(name_list: list):
 
 @login_required(redirect_field_name="login")
 def GroupRegister(request: HttpRequest):
+    platform_user = PlatformUser.objects.get(uid=request.user)
     if request.method == "POST" and request.POST:
         err_msg = "注册成功！"
         name = request.POST['name']
