@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block mainpage %}
+    <body>
+        <h1>信息编辑</h1>
+        {% if err_msg %}
+        <div>{{ err_msg }}</div>
+        {% endif %}
+        {%if err_msg_pw %}
+            {% for msg in err_msg_pw %}
+            <div>{{ msg }}</div>
+            {% endfor %}
+        {% endif %}
+        <form method="post">{% csrf_token %}
+            昵称: <input type="text" name="nickname"><br>
+            性别:<br>
+            <input type="radio" name="gender" value="男">男<br>
+            <input type="radio" name="gender" value="女">女<br>
+            专业:<br>
+            <input type="radio" name="major" value="汉语言">汉语言<br>
+            <input type="radio" name="major" value="外国语">外国语<br>
+            <input type="radio" name="major" value="社会学">社会学<br>
+            <input type="radio" name="major" value="政治学">政治学<br>
+            <input type="radio" name="major" value="历史学">历史学<br>
+            <input type="radio" name="major" value="数学">数学<br>
+            <input type="radio" name="major" value="物理学">物理学<br>
+            <input type="radio" name="major" value="化学">化学<br>
+            <input type="radio" name="major" value="生物学">生物学<br>
+            <input type="radio" name="major" value="计算机科学">计算机科学<br>
+            <input type="radio" name="major" value="心理学">心理学<br>
+            <input type="radio" name="major" value="哲学">哲学<br>
+            <input type="radio" name="major" value="其他">其他<br>
+            书籍类型偏好:<br>
+            {% for tag in Tags %}
+            <input type="checkbox" name="type" value="{{ tag.book_tag }}">{{ tag.book_tag }}<br>
+            {% endfor %}
+            <input type="submit" value="修改">
+        </form>
+    </body>
+{% endblock mainpage %}
