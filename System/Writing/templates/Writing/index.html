@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% block mainpage %}
 {% if pencraft_list %}
     <ul>
     {% for pencraft in pencraft_list %}
@@ -10,3 +12,4 @@
 {% else %}
     <p>No pencrafts are available.</p>
 {% endif %}
+{% endblock mainpage %}

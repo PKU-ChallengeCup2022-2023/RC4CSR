@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% block mainpage %}
 <h1>Welcome to the discussion zone!</h1>
 <h1>Feel free to visit the groups you like!</h1>
 {% if latest_group_list %}
@@ -9,3 +11,4 @@
 {% else %}
     <p>No groups yet.</p>
 {% endif %}
+{% endblock mainpage %}

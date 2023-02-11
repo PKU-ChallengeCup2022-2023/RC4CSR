@@ -1,9 +1,5 @@
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>图书搜索页面</title>
-    </head>
-    <body>
+{% extends 'base.html' %}
+{% block mainpage %}
         <h1>图书搜索</h1>
         {% if err_msg %}
         <div>{{ err_msg }}</div>
@@ -15,5 +11,4 @@
             书名：<input type="text" name="name"><br>
             <input type="submit" value="提交">
         </form>
-    </body>
-</html>
+{% endblock mainpage %}
