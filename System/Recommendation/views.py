@@ -9,53 +9,14 @@ from .models import Book, SearchRecord
 from Account.models import PlatformUser
 
 from .RecModel.Recommender import RecSystem
-
-
-def preprecess_nn(pre=[]):
-    """Convert $pre to NN input"""
-
-    res = [0 for i in range(20)]
-
-    # extract category id on the hundredth
-    tmp = [0 for i in range(6)]
-    for i in range(len(pre)):
-        tmp[pre[i] // 100] = tmp[pre[i] // 100] + 1
-
-    # find the 2 favorite categories
-    maxid1, maxval = 0, 0
-    for i in range(len(tmp)):
-        if maxval < tmp[i]:
-            maxid1 = i
-            maxval = tmp[i]
-    res[0] = maxid1
-    del tmp[maxid1]
-    maxid2, maxval = 0, 0
-    for i in range(len(tmp)):
-        if maxval < tmp[i]:
-            maxid2 = i
-            maxval = tmp[i]
-    res[10] = maxid2
-
-    tmp1 = 1
-    tmp2 = 11
-    for i in range(len(pre)):
-        if pre[i] // 100 == maxid1:
-            if tmp1 < 10:
-                res[tmp1] = pre[i] % 100
-                tmp1 += 1
-        if pre[i] // 100 == maxid2:
-            if tmp2 < 20:
-                res[tmp2] = pre[i] % 100
-                tmp2 += 1
-
-    return res
+from .RecModel.preprocess import *
 
 
 @login_required(redirect_field_name="login")
 def index(request):
     platform_user = PlatformUser.objects.get(uid=request.user)
     rec = RecSystem()
-    topk = 1  # How many books to be recommended
+    topk = 3  # How many books to be recommended
     book_list = []
 
     """ Get user's preference tag_id, store in list $preference """
@@ -67,19 +28,13 @@ def index(request):
 
     """ NN Recommendation """
     nn_input = preprecess_nn(list(preference))
-    """ 
-    WARNING: This model may be broken for some reason. It only recommends 
-    the first few ones with the smallest id. But it is error-free, so I 
-    still make a PR.
-
-    """
-    book_list = rec.recommend(nn_input, topk=1, flag=0)
+    book_list = rec.recommend(nn_input, topk=topk, flag=0)
 
     # TODO: Implement VAE model
 
     """ Note: $book_list has been filled here. """
+    # print(book_list)
 
-    print(book_list)
     return render(request, "Recommendation/index.html", locals())
 
 
