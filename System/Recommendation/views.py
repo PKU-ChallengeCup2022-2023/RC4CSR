@@ -17,14 +17,13 @@ def index(request):
     platform_user = PlatformUser.objects.get(uid=request.user)
     rec = RecSystem()
     topk = 3  # How many books to be recommended
-    book_list = []
 
     """ Get user's preference tag_id, store in list $preference """
     preference = []
     preference_query = platform_user.type_preference.filter(platformuser=platform_user)
     for item in preference_query:
         preference.append(item.tag_id)
-    print(preference)
+    # print(preference)
 
     """ NN Recommendation """
     nn_input = preprecess_nn(list(preference))
@@ -34,7 +33,8 @@ def index(request):
 
     """ Note: $book_list has been filled here. """
     # print(book_list)
-
+    
+    books = Book.objects.filter(pk__in=book_list)
     return render(request, "Recommendation/index.html", locals())
 
 
