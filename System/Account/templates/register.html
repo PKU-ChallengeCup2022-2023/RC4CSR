@@ -9,6 +9,11 @@
         {% if err_msg %}
         <div>{{ err_msg }}</div>
         {% endif %}
+        {%if err_msg_pw %}
+            {% for msg in err_msg_pw %}
+            <div>{{ msg }}</div>
+            {% endfor %}
+        {% endif %}
         <form method="post">{% csrf_token %}
             用户名: <input type="text" name="name"><br>
             密码：<input type="password" name="password1"><br>

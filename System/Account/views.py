@@ -4,8 +4,24 @@ from .models import PlatformUser
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.auth.password_validation import validate_password
 from django.db.utils import IntegrityError
+from django.core.exceptions import ValidationError
 from Recommendation.models import Book_Tag
+
+def check_password(password: str):
+    err_msg_pw = []
+    try:
+        validate_password(password)
+    except ValidationError as e:
+        for msg in e.messages:
+            if msg == "This password is too short. It must contain at least 6 characters.":
+                err_msg_pw.append("密码过短！合法的密码至少有6位！")
+            elif msg == "This password is too common.":
+                err_msg_pw.append("该密码太常见了！")
+            elif msg == "This password is entirely numeric.":
+                err_msg_pw.append("该密码是纯数字的！")
+    return err_msg_pw
 
 # Create your views here.
 def UserRegister(request: HttpRequest):
@@ -28,6 +44,12 @@ def UserRegister(request: HttpRequest):
             err_msg = "两次输入的密码不一致！"
             return render(request, "register.html", locals())
 
+        # check password validation
+        err_msg_pw = check_password(password1)
+        if len(err_msg_pw):
+            err_msg = "注册失败！请查看下方错误信息！"
+            return render(request, 'register.html', locals())
+        
         try:
             # create basic user
             user = User.objects.create_user(username=name, password=password1) 
@@ -90,8 +112,34 @@ def UserPage(request: HttpRequest, username: str):
     """
     user = User.objects.get(username=username)
     platform_user = PlatformUser.objects.get(uid=user)
+
+    if request.user.username != username:
+        return HttpResponseRedirect("/account/login/")
     if request.method == "POST" and request.POST:
         return UserLogout(request)
     return render(request, "user_page.html", locals())
     
-
+def Change_Password(request: HttpRequest):
+    if request.method == 'POST' and request.POST:
+        username = request.POST['username']
+        original_password = request.POST['originalpw']
+        new_password1 = request.POST['newpw1']
+        new_password2 = request.POST['newpw2']
+        user = auth.authenticate(username=username, password=original_password)
+        err_msg = "密码修改成功！"
+        if user:
+            if new_password1 != new_password2:
+                err_msg = "前后两次输入的密码不一致！"
+                return render(request, 'changepw.html', locals())
+            err_msg_pw = check_password(new_password1)
+            if len(err_msg_pw):
+                err_msg = "密码修改失败！请查看下方错误信息！"
+                return render(request, 'changepw.html', locals())
+            user.set_password(new_password1)
+            user.save()
+            platfrom_user = PlatformUser.objects.get(uid=user)
+            platfrom_user.save()
+        else:
+            err_msg = "用户名或密码错误！"
+        return render(request, 'changepw.html', locals())
+    return render(request, 'changepw.html', locals())
