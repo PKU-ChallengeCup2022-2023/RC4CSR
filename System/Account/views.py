@@ -151,6 +151,7 @@ def Change_Password(request: HttpRequest):
 @login_required(redirect_field_name='login')
 def Edit_Info(request: HttpRequest, username: str):
     Tags = Book_Tag.objects.all()
+    platform_user = PlatformUser.objects.get(uid=User.objects.get(username=username))
     if request.user.username != username:
         return HttpResponseRedirect("/account/login/")
     if request.method == "POST" and request.POST:
@@ -159,7 +160,6 @@ def Edit_Info(request: HttpRequest, username: str):
         major = request.POST["major"] 
         type = request.POST.getlist("type")
         err_msg = "修改成功！"
-        platform_user = PlatformUser.objects.get(uid=User.objects.get(username=username))
         try:
             same_nickname = PlatformUser.objects.get(nickname=nickname)
         except PlatformUser.DoesNotExist:
