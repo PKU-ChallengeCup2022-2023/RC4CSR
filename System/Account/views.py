@@ -10,6 +10,9 @@ from django.core.exceptions import ValidationError
 from Recommendation.models import Book_Tag
 
 def check_password(password: str):
+    """check password helper function
+    return a list of error info
+    """
     err_msg_pw = []
     try:
         validate_password(password)
@@ -37,7 +40,6 @@ def UserRegister(request: HttpRequest):
         gender = request.POST["gender"] # sex
         major = request.POST["major"] # major
         type = request.POST.getlist("type")
-        print(request.POST)
         err_msg = "成功注册！请跳转至/login/登录页面进行登录"
 
         if password1 != password2: # check password
@@ -70,7 +72,6 @@ def UserRegister(request: HttpRequest):
             err_msg = "该昵称已存在！"
             return render(request, "register.html", locals())
         for tag in type:
-            print(tag)
             platform_user.type_preference.add(Book_Tag.objects.get(book_tag=tag))
         
         platform_user.save()
@@ -115,11 +116,12 @@ def UserPage(request: HttpRequest, username: str):
 
     if request.user.username != username:
         return HttpResponseRedirect("/account/login/")
-    if request.method == "POST" and request.POST:
-        return UserLogout(request)
+
     return render(request, "user_page.html", locals())
     
 def Change_Password(request: HttpRequest):
+    """Change Password Function
+    """
     if request.method == 'POST' and request.POST:
         username = request.POST['username']
         original_password = request.POST['originalpw']
@@ -143,3 +145,31 @@ def Change_Password(request: HttpRequest):
             err_msg = "用户名或密码错误！"
         return render(request, 'changepw.html', locals())
     return render(request, 'changepw.html', locals())
+
+@login_required(redirect_field_name='login')
+def Edit_Info(request: HttpRequest, username: str):
+    Tags = Book_Tag.objects.all()
+    platform_user = PlatformUser.objects.get(uid=User.objects.get(username=username))
+    if request.user.username != username:
+        return HttpResponseRedirect("/account/login/")
+    if request.method == "POST" and request.POST:
+        nickname = request.POST['nickname']
+        gender = request.POST["gender"] 
+        major = request.POST["major"] 
+        type = request.POST.getlist("type")
+        err_msg = "修改成功！"
+        try:
+            same_nickname = PlatformUser.objects.get(nickname=nickname)
+        except PlatformUser.DoesNotExist:
+            platform_user.nickname = nickname
+            platform_user.gender = list(filter((lambda x: x[1]==gender), PlatformUser.Gender.choices))[0][0]
+            platform_user.major=list(filter((lambda x: x[1]==major), PlatformUser.Major.choices))[0][0]
+            platform_user.type_preference.clear()
+            for tag in type:
+                platform_user.type_preference.add(Book_Tag.objects.get(book_tag=tag))
+            platform_user.save()
+            return render(request, 'edit_info.html', locals())
+        if same_nickname:
+                err_msg = "修改失败！该昵称已存在！"
+                return render(request, 'edit_info.html', locals())
+    return render(request, 'edit_info.html', locals())

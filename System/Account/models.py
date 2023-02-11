@@ -24,7 +24,7 @@ class PlatformUser(models.Model):
         MALE = (0, "男")
         FEMALE = (1, "女")
 
-    gender = models.SmallIntegerField("性别", choices=Gender.choices)
+    gender = models.SmallIntegerField("性别", choices=Gender.choices, null=False, blank=False)
 
     class Major(models.IntegerChoices):
         CHINESE = (0, "汉语言")
