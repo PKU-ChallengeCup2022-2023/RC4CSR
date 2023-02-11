@@ -116,9 +116,7 @@ def UserPage(request: HttpRequest, username: str):
 
     if request.user.username != username:
         return HttpResponseRedirect("/account/login/")
-    if request.method == "POST" and request.POST:
-        print(request.POST)
-        return UserLogout(request)
+
     return render(request, "user_page.html", locals())
     
 def Change_Password(request: HttpRequest):

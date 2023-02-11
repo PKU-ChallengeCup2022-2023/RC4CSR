@@ -141,7 +141,7 @@ class Book_Tag(models.Model):
     class Meta:
         verbose_name = "书籍类型"
         verbose_name_plural = verbose_name
-    tag_id = models.IntegerField("id", null=True, unique=True)
+    tag_id = models.IntegerField("id", unique=True)
     book_tag = models.CharField("标签", max_length=20, null=True)
     def __str__(self):
         return self.book_tag
