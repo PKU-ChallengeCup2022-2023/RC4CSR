@@ -3,7 +3,7 @@
 <h1>欢迎来到讨论组：{{ group.groupName }}</h1>
 <ul>
     {% if err_msg %}
-        <div>{{ err_msg }}</div>
+        <div data-alert class="alert-box info round">{{ err_msg }}</div>
         {% endif %}
 {% for record in records %}
     <h3>{{ record.summary }}</h3>

@@ -2,7 +2,7 @@
 {% block mainpage %}
         <h1>图书搜索</h1>
         {% if err_msg %}
-        <div>{{ err_msg }}</div>
+        <div data-alert class="alert-box info round">{{ err_msg }}</div>
             {% if book_found %}
                 <li><a href="/recommendation/book/{{ book_found.id }}">{{ book_found.bookname }}</a></li>
             {% endif %}

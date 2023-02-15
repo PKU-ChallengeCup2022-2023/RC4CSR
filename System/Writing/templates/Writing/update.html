@@ -3,8 +3,8 @@
 <h1>亲爱的创作者 {{platform_user.nickname}}</h1>
 <h2>开始新章节的写作：</h2>
 {% if err_msg %}
-        <div>{{ err_msg }}</div>
-        {% endif %}
+    <div data-alert class="alert-box info round">{{ err_msg }}</div>
+{% endif %}
 <form method="post">{% csrf_token %}
     {% if pencraft_list %}
     <h3>以下是您已发布的作品，请选择要更新的作品：</h3>

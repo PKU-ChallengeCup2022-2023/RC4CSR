@@ -58,7 +58,7 @@ def search(request: HttpRequest):
         )
         err_msg = "搜索成功，以下是该书目详情页面："
     else:
-        err_msg = "搜索失败"
+        pass
 
     return render(request, "Recommendation/search.html", locals())
 

@@ -16,8 +16,8 @@
 {% endif %}
 <h2>开始新的创作：</h2>
 {% if err_msg %}
-        <div>{{ err_msg }}</div>
-        {% endif %}
+        <div data-alert class="alert-box info round">{{ err_msg }}</div>
+{% endif %}
 <form method="post">{% csrf_token %}
     作品标题(100字以内)<input type="text" name="topic"><br>
     作品简介(200字以内)<input type="text" name="description"><br>

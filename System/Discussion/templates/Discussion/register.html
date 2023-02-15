@@ -2,7 +2,7 @@
 {% block mainpage %}
         <h1>讨论组注册</h1>
         {% if err_msg %}
-        <div>{{ err_msg }}</div>
+        <div data-alert class="alert-box warning round">{{ err_msg }}</div>
         {% endif %}
         <form method="post">{% csrf_token %}
             组名：<input type="text" name="name"><br>
