@@ -7,7 +7,7 @@ from django.db.utils import IntegrityError
 from django.utils import timezone
 from Account.models import PlatformUser, PlatformUserManager
 from Recommendation.models import Book
-from .models import DiscGroup, DiscRecord
+from .models import DiscGroup, DiscRecord, LikeRecord
 
 # Create your views here.
 
@@ -34,6 +34,7 @@ def detail(request: HttpRequest, group_id):
                 publisher=PlatformUser.objects.get(uid=request.user),
                 belong_to=group,
                 content=content,
+                like=LikeRecord.objects.create()
             )
             err_msg = "发布成功！"
         except:
@@ -146,3 +147,19 @@ def GroupRegister(request: HttpRequest):
         return render(request, 'Discussion/register.html', locals())
     else:
         return render(request, 'Discussion/register.html', locals())
+
+@login_required(redirect_field_name='login')
+def Like(request: HttpRequest, record_id):
+    platform_user = PlatformUser.objects.get(uid=request.user)
+    disc_record = get_object_or_404(DiscRecord, pk=record_id)
+    group = disc_record.belong_to
+    user_list = disc_record.like.like_users.all()
+    if platform_user in user_list:
+        disc_record.like.like_num -= 1
+        disc_record.like.like_users.remove(platform_user)
+    else:
+        disc_record.like.like_num += 1
+        disc_record.like.like_users.add(platform_user)
+    disc_record.like.save()
+    disc_record.save()
+    return HttpResponseRedirect("/discussion/%s/" % group.id)
