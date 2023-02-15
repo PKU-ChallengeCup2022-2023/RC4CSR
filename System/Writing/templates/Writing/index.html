@@ -5,7 +5,7 @@
     {% for pencraft in pencraft_list %}
         <!-- <li><a href="/writing/{{ pencraft.id }}/">{{ pencraft.topic }}</a></li> hard coded -->
         <li><a href="{% url 'pencraft' pencraft.id %}">{{ pencraft.topic }}</a></li>
-        <h3>{{pencraft.pub_date}}</h3>
+        <h5>{{pencraft.pub_date}}</h5>
         {{pencraft.description}}
     {% endfor %}
     </ul>

@@ -1,23 +1,25 @@
 {% extends 'base.html' %}
 {% block mainpage %}
-<h1>{{platform_user.nickname}}</h1>
-<h2>Start your new chapter!</h2>
+<h1>亲爱的创作者 {{platform_user.nickname}}</h1>
+<h2>开始新章节的写作：</h2>
 {% if err_msg %}
         <div>{{ err_msg }}</div>
         {% endif %}
 <form method="post">{% csrf_token %}
     {% if pencraft_list %}
+    <h3>以下是您已发布的作品，请选择要更新的作品：</h3>
     <ul>
     {% for pencraft in pencraft_list %}
         <li><a href="{% url 'pencraft' pencraft.id %}">{{ pencraft.topic }}</a></li>
         <input type="radio" name="collection" value={{pencraft.id}}>{{ pencraft.topic }}<br>
     {% endfor %}
-        chap_name(in 100 chars)<input type="text" name="chap_name"><br>
-        text(in 3k chars)<input type="text" name="text"><br>
+        章节题目(100字以内)<input type="text" name="chap_name"><br>
+        章节正文(3000字以内)<input type="text" name="text"><br>
         <input type="submit" value="submit">
     </ul>
     {% else %}
-        <p>No pencrafts are available.</p>
+        <p>您暂未在本平台上发布创作</p>
+        <p>请先返回创作者首页，开始一部新的作品！</p>
     {% endif %}
 </form>
 {% endblock mainpage %}

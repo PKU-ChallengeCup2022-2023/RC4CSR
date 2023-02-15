@@ -1,5 +1,7 @@
-<h1>{{platform_user.nickname}}</h1>
-<h2>Here are your pencrafts: </h2>
+{% extends 'base.html' %}
+{% block mainpage %}
+<h1>亲爱的创作者 {{platform_user.nickname}}</h1>
+<h2>以下是您已经发布的作品: </h2>
 {% if pencraft_list %}
     <ul>
     {% for pencraft in pencraft_list %}
@@ -10,18 +12,16 @@
     {% endfor %}
     </ul>
 {% else %}
-    <p>No pencrafts are available.</p>
+    <p>您暂未在本平台上发布创作</p>
 {% endif %}
-<h2>Start your new pencraft!</h2>
+<h2>开始新的创作：</h2>
 {% if err_msg %}
         <div>{{ err_msg }}</div>
         {% endif %}
 <form method="post">{% csrf_token %}
-    Topic(in 100 chars)<input type="text" name="topic"><br>
-    Description(in 200 chars)<input type="text" name="description"><br>
+    作品标题(100字以内)<input type="text" name="topic"><br>
+    作品简介(200字以内)<input type="text" name="description"><br>
 
     <input type="submit" value="submit">
 </form>
-
-<h2>Other functions</h2>
-<li><a href="/writing/author/{{ user.username }}/update/">Update one of your previous work</a></li>
+{% endblock mainpage %}
