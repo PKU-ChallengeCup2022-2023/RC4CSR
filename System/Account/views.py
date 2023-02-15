@@ -122,6 +122,7 @@ def UserPage(request: HttpRequest, username: str):
 def Change_Password(request: HttpRequest):
     """Change Password Function
     """
+    platform_user = PlatformUser.objects.get(uid=request.user)
     if request.method == 'POST' and request.POST:
         username = request.POST['username']
         original_password = request.POST['originalpw']

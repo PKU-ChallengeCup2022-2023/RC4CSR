@@ -31,10 +31,23 @@
         <div class="row">
         <div class="medium-2 columns" style="background-color:#f1f1f1;">
           <ul class="side-nav">
-            <li class="active"><a href="/account">账户</a></li>
+            <h4>快速导航</h4>
             <li><a href="/recommendation">推荐区</a></li> 
             <li><a href="/discussion">讨论区</a></li>
             <li><a href="/writing">创作区</a></li> 
+            <h4>账户功能</h4>
+            <li><a href="/account/changepw/">修改密码</a></li>
+            <li><a href="/account/{{ platform_user.uid.username }}/editinfo/">修改信息</a></li>  
+            <h4>推荐区功能</h4>
+            <li><a href="/recommendation">图书推荐</a></li> 
+            <li><a href="/recommendation/search/">图书搜索</a></li> 
+            <h4>讨论区功能</h4>
+            <li><a href="/discussion">讨论中心</a></li>
+            <li><a href="/discussion/register/">创建讨论组</a></li>
+            <h4>创作区功能</h4>
+            <li><a href="/writing">创作首页</a></li>
+            <li><a href="/writing/author/{{ platform_user.uid.username }}">创作者首页</a></li>
+            <li><a href="/writing/author/{{ platform_user.uid.username }}/update/">更新创作</a></li>
           </ul>
         </div>
         
