@@ -6,10 +6,13 @@
         <h1>欢迎来到您的用户主页！</h1>
         {% endif %}
         <h2>以下是您的用户信息：</h2>
-        <h3>性别：{{platform_user.gender}}</h3>
-        <h3>专业：{{platform_user.major}}</h3>
+        <h3>性别：{{gen}}</h3>
+        <h3>专业：{{major}}</h3>
         <h3>您的书籍偏好为：</h3>
-        <h3>{{platform_user.type_preference}}</h3>
+        {% for tag in Tags %}
+        <h4>{{tag.book_tag}}</h4>
+        {% endfor %}
+        
 
 
 {% endblock mainpage %}

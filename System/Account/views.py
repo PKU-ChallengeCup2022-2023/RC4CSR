@@ -113,6 +113,9 @@ def UserPage(request: HttpRequest, username: str):
     """
     user = User.objects.get(username=username)
     platform_user = PlatformUser.objects.get(uid=user)
+    Tags = platform_user.type_preference.all()
+    major = PlatformUser.Major.choices[platform_user.major][1]
+    gen = PlatformUser.Gender.choices[platform_user.gender][1]
 
     if request.user.username != username:
         return HttpResponseRedirect("/account/login/")

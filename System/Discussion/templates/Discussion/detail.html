@@ -1,15 +1,16 @@
 {% extends 'base.html' %}
 {% block mainpage %}
-<h1>{{ group.groupName }}</h1>
+<h1>欢迎来到讨论组：{{ group.groupName }}</h1>
 <ul>
     {% if err_msg %}
-        <div>{{ err_msg }}</div>
+        <div data-alert class="alert-box info round">{{ err_msg }}</div>
         {% endif %}
 {% for record in records %}
-    <h1>{{ record.summary }}</h1>
+    <h3>{{ record.summary }}</h3>
     <li>publisher: {{ record.publisher }}<li>
-    <h2>{{ record.content }}</h2>
-    <li><a href="{% url 'like' record.id %}">likes: {{ record.like.like_num }}</a></li>
+    <h4>{{ record.content }}</h4>
+    <a href="{% url 'like' record.id %}" class="button info" role="button">点赞：{{ record.like.like_num }}</a>
+    <!--button class="button info"><li><a href="{% url 'like' record.id %}">likes: {{ record.like.like_num }}</a></li></button>-->
 {% endfor %}
 <form method="post">{% csrf_token %}
     <h1>新建评论</h1>
