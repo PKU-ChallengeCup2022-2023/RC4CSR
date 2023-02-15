@@ -43,6 +43,14 @@ class DiscGroup(models.Model):
     def __str__(self) -> str:
         return self.groupName
     
+class LikeRecord(models.Model):
+
+    class Meta:
+        verbose_name = "点赞记录"
+        verbose_name_plural = verbose_name
+
+    like_num = models.IntegerField(default=0)
+    like_users = models.ManyToManyField(to=PlatformUser)
     
     
 class DiscRecord(models.Model):
@@ -56,7 +64,7 @@ class DiscRecord(models.Model):
     reply_to = models.ForeignKey("DiscRecord", on_delete=models.CASCADE, default=None, null=True, blank=True)
     belong_to = models.ForeignKey("DiscGroup", on_delete=models.CASCADE)
     content = models.CharField(max_length=200)
-    likes = models.IntegerField(default=0)
+    like = models.OneToOneField(to=LikeRecord, on_delete=models.CASCADE)
     
     def __str__(self):
         return self.summary
