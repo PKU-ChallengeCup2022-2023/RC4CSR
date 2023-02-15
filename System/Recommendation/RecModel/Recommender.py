@@ -10,6 +10,9 @@ import time
 import tensorflow_addons as tfa
 from .utils import *
 
+from Account.models import PlatformUser
+from Recommendation.models import Book, SearchRecord
+
 # random.seed(42)
 path = "Recommendation/RecModel/"
 
@@ -140,6 +143,54 @@ class Model(tf.keras.Model):
         return z_mean, z_log_var, z
 
 
+def preprocess_nn(pre):
+    """Convert $pre to NN input"""
+
+    res = [0 for i in range(20)]
+
+    # extract category id on the hundredth
+    tmp = [0 for i in range(6)]
+    for i in range(len(pre)):
+        tmp[pre[i] // 100] = tmp[pre[i] // 100] + 1
+
+    # find the 2 favorite categories
+    maxid1, maxval = 0, 0
+    for i in range(len(tmp)):
+        if maxval < tmp[i]:
+            maxid1 = i
+            maxval = tmp[i]
+    res[0] = maxid1
+    tmp[maxid1] = -1
+    maxid2, maxval = 0, 0
+    for i in range(len(tmp)):
+        if maxval < tmp[i]:
+            maxid2 = i
+            maxval = tmp[i]
+    res[10] = maxid2
+
+    tmp1 = 1
+    tmp2 = 11
+    for i in range(len(pre)):
+        if pre[i] // 100 == maxid1:
+            if tmp1 < 10:
+                res[tmp1] = pre[i] % 100
+                tmp1 += 1
+        if pre[i] // 100 == maxid2:
+            if tmp2 < 20:
+                res[tmp2] = pre[i] % 100
+                tmp2 += 1
+
+    return res
+
+
+def preprocess_vae(like):
+    user_pre = np.zeros((1, 5251))
+    for i in like:
+        user_pre[0][i] = 1
+
+    return user_pre
+
+
 # 推荐系统
 class RecSystem:
     def __init__(self):
@@ -147,26 +198,59 @@ class RecSystem:
         self.model_vae = Model(5251, 512, 1024)
         self.model_vae.load_weights(path + "VAE_RD_2_3_512_1024__")
 
-    # 推荐
-    def recommend(self, user, topk=1, flag=0):
+    def recommend_nn(self, user, topk=1):
+        data = []
+        for i in range(5250):
+            uu = copy.copy(user)
+            uu.append(i)
+            data.append(uu)
+        score = self.model_nn.predict(data).tolist()
+        best_id = []  # 找电影id
+        for i in range(topk):
+            tmp_max = max(score)
+            tmp_id = score.index(tmp_max)
+            best_id.append(tmp_id + 1)
+            score[tmp_id] = [0]
+        return best_id  # 从1开始
+
+    def recommend_vae(self, user, topk=1):
+        pred = self.model_vae.predict(user)
+        rec_idx = (-pred).argsort()[:, :topk]  # top k movies
+        return rec_idx
+
+    """
+    function: recommend(self, platform_user, topk=1, flag=0)
+        integrated version of recommendation. 
+        input: platform_user -- PlatformUser
+               topk -- number of recommendations
+               flag -- 0 for NN, 1 for VAE
+        output: book_tag of recommended books
+    """
+
+    def recommend(self, platform_user, topk=1, flag=0):
         if flag == 0:
-            data = []
-            for i in range(5250):
-                uu = copy.copy(user)
-                uu.append(i)
-                data.append(uu)
-            score = self.model_nn.predict(data).tolist()
-            best_id = []  # 找电影id
-            for i in range(topk):
-                tmp_max = max(score)
-                tmp_id = score.index(tmp_max)
-                best_id.append(tmp_id + 1)
-                score[tmp_id] = [0]
-            return best_id  # 从1开始
+            """Get user's preference tag_id, store in list $preference"""
+            preference = []
+            preference_query = platform_user.type_preference.filter(
+                platformuser=platform_user
+            )
+            for item in preference_query:
+                preference.append(item.tag_id)
+
+            """ NN Recommendation """
+            nn_input = preprocess_nn(preference)
+            rec_nn = self.recommend_nn(nn_input, topk=topk)
+            return rec_nn
+
         else:
-            pred = self.model_vae.predict(user)
-            rec_idx = (-pred).argsort()[:, :topk]  # top k movies
-            return rec_idx
+            """Get user's search history, store in $search_his"""
+            search_his = []
+            search_his_ = SearchRecord.objects.filter(searcher=platform_user)
+            for item in search_his_:
+                search_his.append(Book.objects.get(bookname=item.search_cont).book_tag)
 
-
-rec_system = RecSystem()
+            print("In recommendation, preprocess success.")
+            """ VAE Recommendation"""
+            vae_input = preprocess_vae(search_his)
+            rec_vae = self.recommend_vae(vae_input, topk=topk)[0]
+            return rec_vae
