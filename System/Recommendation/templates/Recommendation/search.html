@@ -7,8 +7,11 @@
                 <li><a href="/recommendation/book/{{ book_found.id }}">{{ book_found.bookname }}</a></li>
             {% endif %}
         {% endif %}
+        <h3>请在搜索框中输入正确的书名</h3>
+        <div class="panel callout">
         <form method="get">
             书名：<input type="text" name="name"><br>
             <input type="submit" value="提交">
         </form>
+    </div>
 {% endblock mainpage %}
