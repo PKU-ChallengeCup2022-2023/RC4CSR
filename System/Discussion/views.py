@@ -27,12 +27,14 @@ def detail(request: HttpRequest, group_id):
         #TODO: likes & reply_to
         summary = request.POST["summary"]
         content = request.POST["content"]
+        reply_to = request.POST["replyto"]
         try:
             disc_record = DiscRecord.objects.create(
                 summary=summary,
                 pub_time=datetime.datetime.now(),
                 publisher=PlatformUser.objects.get(uid=request.user),
                 belong_to=group,
+		        reply_to=reply_to,
                 content=content,
                 like=LikeRecord.objects.create()
             )
