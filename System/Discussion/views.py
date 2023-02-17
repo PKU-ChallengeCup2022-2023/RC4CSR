@@ -22,7 +22,6 @@ def detail(request: HttpRequest, group_id):
     group = get_object_or_404(DiscGroup, pk=group_id)
     records = DiscRecord.objects.filter(belong_to=group)
     platform_user = PlatformUser.objects.get(uid=request.user)
-    
     if request.method == "POST" and request.POST:
         #TODO: likes & reply_to
         summary = request.POST["summary"]
@@ -34,7 +33,6 @@ def detail(request: HttpRequest, group_id):
                 pub_time=datetime.datetime.now(),
                 publisher=PlatformUser.objects.get(uid=request.user),
                 belong_to=group,
-		        reply_to=reply_to,
                 content=content,
                 like=LikeRecord.objects.create()
             )
@@ -42,7 +40,13 @@ def detail(request: HttpRequest, group_id):
         except:
             print("Something is wrong when the user discuss, uid=", request.user)
             err_msg = "操作失败，请重试！"
-            return render(request, 'Discussion/detail.html', locals())
+        try:
+            reply_record = DiscRecord.objects.get(pk=reply_to)
+            disc_record.reply_to = reply_record
+        except DiscRecord.DoesNotExist:
+            pass
+        disc_record.save()
+        return render(request, 'Discussion/detail.html', locals())
 
     return render(request, 'Discussion/detail.html', locals())
 

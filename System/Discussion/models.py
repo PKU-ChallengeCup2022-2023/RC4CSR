@@ -62,7 +62,7 @@ class DiscRecord(models.Model):
     pub_time = models.DateTimeField("发布时间")
     publisher = models.ForeignKey("Account.PlatformUser", on_delete=models.CASCADE)
     belong_to = models.ForeignKey("DiscGroup", on_delete=models.CASCADE)
-    reply_to = models.IntegerField("回复", default=0)
+    reply_to = models.OneToOneField(to="self", on_delete=models.CASCADE, null=True, blank=True)
     content = models.CharField(max_length=200)
     like = models.OneToOneField(to=LikeRecord, on_delete=models.CASCADE)
     
