@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 import datetime
 
-from .models import Book, SearchRecord
+from .models import Book, SearchRecord, Tags
 from Account.models import PlatformUser
 
 from .RecModel.Recommender import RecSystem
@@ -52,6 +52,7 @@ def search(request: HttpRequest):
 def detailBook(request, book_id):
     platform_user = PlatformUser.objects.get(uid=request.user)
     book = Book.objects.get(id=book_id)
+    booktag = Tags[book.book_tag]
     return render(request, "Recommendation/detailBook.html", locals())
 
 

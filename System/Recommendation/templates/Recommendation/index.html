@@ -4,10 +4,11 @@
 {% if books %}
     <h2>根据您的读书偏好，系统给您的推荐书籍有：</h2>
     {% for book in books %}
+    <div class="panel callout">
     <li><a href="book/{{ book.id }}">{{ book.bookname }}</a></li>
     <p>作者：{{book.author}}</p>
-    <p><a href={{book.url}}>豆瓣详情</a></p>
-    <p></p>
+    <p>以下是本书的<a href={{book.url}}>豆瓣详情</a></p>
+    </div>
     {% endfor %}
 {% else %}
     <p>未收到推荐书籍，请完善用户设置！</p>
