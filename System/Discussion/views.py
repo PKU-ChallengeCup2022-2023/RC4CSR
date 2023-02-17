@@ -50,6 +50,9 @@ def detail(request: HttpRequest, group_id):
             except DiscRecord.DoesNotExist:
                 err_msg = '回复不合法！'
                 disc_record.delete()
+            except ValueError:
+                err_msg = "回复格式不正确！应填入评论的id！"
+                disc_record.delete()
         return render(request, 'Discussion/detail.html', locals())
 
     return render(request, 'Discussion/detail.html', locals())
