@@ -40,12 +40,16 @@ def detail(request: HttpRequest, group_id):
         except:
             print("Something is wrong when the user discuss, uid=", request.user)
             err_msg = "操作失败，请重试！"
-        try:
-            reply_record = DiscRecord.objects.get(pk=reply_to)
-            disc_record.reply_to = reply_record
-        except DiscRecord.DoesNotExist:
-            pass
-        disc_record.save()
+        if reply_to != "":
+            try:
+                if int(reply_to) == disc_record.id:
+                    raise DiscRecord.DoesNotExist
+                reply_record = DiscRecord.objects.get(pk=reply_to)
+                disc_record.reply_to = reply_record
+                disc_record.save()
+            except DiscRecord.DoesNotExist:
+                err_msg = '回复不合法！'
+                disc_record.delete()
         return render(request, 'Discussion/detail.html', locals())
 
     return render(request, 'Discussion/detail.html', locals())
