@@ -1,5 +1,19 @@
 {% extends 'base.html' %}
 {% block mainpage %}
-<h1>{{ book.bookname }}</h1>
-<h2>{{ book.author }}</h2>
+<h3>{{ book.bookname }}</h3>
+<div class="panel">
+    <p>作者：{{ book.author }}</p>
+    <p>出版社：{{ book.publisher }}</p>
+    <p>出版时间：{{ book.publish_time }}</p>
+</div>
+<div class="panel callout">
+    <p>平均得分：{{ book.score }}</p>
+    <p>评分分布：</p>
+    <p>5星：{{book.percent_5}}</p>
+    <p>4星：{{book.percent_4}}</p>
+    <p>3星：{{book.percent_3}}</p>
+    <p>2星：{{book.percent_2}}</p>
+    <p>1星：{{book.percent_1}}</p>
+</div>
+豆瓣详情：<a href={{book.url}}>{{book.bookname}}</a>
 {% endblock mainpage %}

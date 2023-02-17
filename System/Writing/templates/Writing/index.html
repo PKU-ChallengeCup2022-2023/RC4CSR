@@ -2,11 +2,15 @@
 {% block mainpage %}
 {% if pencraft_list %}
     <ul>
+        <h3>阅读广场：以下是在本平台发表的作品</h3>
     {% for pencraft in pencraft_list %}
+    <div class="panel callout">
         <!-- <li><a href="/writing/{{ pencraft.id }}/">{{ pencraft.topic }}</a></li> hard coded -->
         <li><a href="{% url 'pencraft' pencraft.id %}">{{ pencraft.topic }}</a></li>
-        <h5>{{pencraft.pub_date}}</h5>
-        {{pencraft.description}}
+        <h5>作者：用户 {{pencraft.author}}</h5>
+        <h5>发布日期：{{pencraft.pub_date}}</h5>
+        简介：{{pencraft.description}}
+    </div>
     {% endfor %}
     </ul>
 {% else %}

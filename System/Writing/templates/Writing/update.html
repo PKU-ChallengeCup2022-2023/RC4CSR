@@ -9,10 +9,12 @@
     {% if pencraft_list %}
     <h3>以下是您已发布的作品，请选择要更新的作品：</h3>
     <ul>
+        <div class="panel callout">
     {% for pencraft in pencraft_list %}
         <li><a href="{% url 'pencraft' pencraft.id %}">{{ pencraft.topic }}</a></li>
         <input type="radio" name="collection" value={{pencraft.id}}>{{ pencraft.topic }}<br>
     {% endfor %}
+        </div>
         章节题目(100字以内)<input type="text" name="chap_name"><br>
         章节正文(3000字以内)<input type="text" name="text"><br>
         <input type="submit" value="submit">
