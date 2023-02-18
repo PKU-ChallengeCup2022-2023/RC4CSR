@@ -52,7 +52,7 @@ def search(request: HttpRequest):
 def detailBook(request, book_id):
     platform_user = PlatformUser.objects.get(uid=request.user)
     book = Book.objects.get(id=book_id)
-    booktag = Tags[book.book_tag]
+    #booktag = Tags[book.book_tag]
     return render(request, "Recommendation/detailBook.html", locals())
 
 
