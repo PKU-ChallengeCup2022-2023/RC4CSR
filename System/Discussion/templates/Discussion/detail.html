@@ -10,7 +10,9 @@
     <div class="panel callout">
     <li>id:{{ record.id }}</li>
     <li>publisher: {{ record.publisher }}</li>
-    <li>reply to: {{ record.reply_to }}</li>
+    {% if record.reply_to %}
+    <li>reply to: {{ record.reply_to.summary }}</li>
+    {% endif %}
     <h4>{{ record.content }}</h4>
     <a href="{% url 'like' record.id %}" class="button info" role="button">点赞：{{ record.like.like_num }}</a>
     <!--button class="button info"><li><a href="{% url 'like' record.id %}">likes: {{ record.like.like_num }}</a></li></button>-->
