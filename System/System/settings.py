@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "Recommendation.apps.RecommendationConfig",
     "Discussion.apps.DiscussionConfig",
     'Writing.apps.WritingConfig',
+    'Main.apps.MainConfig',
 ]
 
 LOGIN_URL = "/account/login/"
