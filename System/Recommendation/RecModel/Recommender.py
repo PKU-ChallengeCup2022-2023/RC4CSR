@@ -227,30 +227,53 @@ class RecSystem:
         output: book_tag of recommended books
     """
 
-    def recommend(self, platform_user, topk=1, flag=0):
-        if flag == 0:
-            """Get user's preference tag_id, store in list $preference"""
-            preference = []
-            preference_query = platform_user.type_preference.filter(
-                platformuser=platform_user
-            )
-            for item in preference_query:
-                preference.append(item.tag_id)
+    def recommend(self, platform_user, topk=1):
 
-            """ NN Recommendation """
-            nn_input = preprocess_nn(preference)
-            rec_nn = self.recommend_nn(nn_input, topk=topk)
-            return rec_nn
+        """Get user's preference tag_id, store in list $preference"""
+        preference = []
+        preference_query = platform_user.type_preference.filter(
+            platformuser=platform_user
+        )
+        for item in preference_query:
+            preference.append(item.tag_id)
 
-        else:
-            """Get user's search history, store in $search_his"""
-            search_his = []
-            search_his_ = SearchRecord.objects.filter(searcher=platform_user)
-            for item in search_his_:
-                search_his.append(Book.objects.get(bookname=item.search_cont).book_tag)
+        """ NN Recommendation """
+        nn_input = preprocess_nn(preference)
+        rec_nn = self.recommend_nn(nn_input, topk=topk)
 
-            print("In recommendation, preprocess success.")
-            """ VAE Recommendation"""
-            vae_input = preprocess_vae(search_his)
-            rec_vae = self.recommend_vae(vae_input, topk=topk)[0]
-            return rec_vae
+        """Get user's search history, store in $search_his"""
+        search_his = []
+        search_his_ = SearchRecord.objects.filter(searcher=platform_user)
+        for item in search_his_:
+            search_his.append(Book.objects.get(bookname=item.search_cont).book_tag)
+
+        """ VAE Recommendation """
+        vae_input = preprocess_vae(search_his)
+        rec_vae = list(self.recommend_vae(vae_input, topk=topk)[0])
+        # return rec_vae
+        print("Recommended by nn:", rec_nn)
+        print("Recommended by vae:", rec_vae)
+
+        """Ratio of each model"""
+        nn_ratio = 0.8 * max(0, 100 - len(search_his)) / 100 + 0.2
+        vae_ratio = 1 - nn_ratio
+        nn_num = int(nn_ratio * topk)
+        vae_num = topk - nn_num
+
+        """Merge two recommendation"""
+        nn_rec = random.sample(rec_nn, nn_num)
+        vae_rec = random.sample(rec_vae, vae_num)
+
+        rec_final = set.union(set(nn_rec), set(vae_rec))
+        if len(rec_final) == topk:
+            print("Recommendation result:", rec_final)
+            return list(rec_final)
+
+        """If two recommendation overlap"""
+        rec_all = set.union(set(rec_nn), set(rec_vae))
+        rec_remain = rec_all - rec_final
+        rec_final = set.union(
+            rec_final, set(random.sample(list(rec_remain), topk - len(rec_final)))
+        )
+        print("Recommendation result:", rec_final)
+        return list(rec_final)

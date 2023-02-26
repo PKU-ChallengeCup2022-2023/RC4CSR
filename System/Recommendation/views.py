@@ -17,7 +17,7 @@ def index(request):
     topk = 3  # How many books to be recommended
 
     rec = RecSystem()
-    book_list = rec.recommend(platform_user, topk=topk, flag=1)  # VAE for flag 1
+    book_list = rec.recommend(platform_user, topk=topk)
 
     books = Book.objects.filter(pk__in=book_list)
     return render(request, "Recommendation/index.html", locals())
@@ -52,7 +52,7 @@ def search(request: HttpRequest):
 def detailBook(request, book_id):
     platform_user = PlatformUser.objects.get(uid=request.user)
     book = Book.objects.get(id=book_id)
-    booktag = Tags[book.book_tag]
+    #booktag = Tags[book.book_tag]
     return render(request, "Recommendation/detailBook.html", locals())
 
 
