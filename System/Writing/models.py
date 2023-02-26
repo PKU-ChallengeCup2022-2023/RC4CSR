@@ -1,5 +1,6 @@
 from django.db import models
 from Account.models import PlatformUser
+from Discussion.models import LikeRecord
 
 # Create your models here.
 
@@ -23,6 +24,7 @@ class Pencraft(models.Model):
         PlatformUser, on_delete=models.CASCADE, 
         related_name='author', default=None, null=True, blank=True
         )
+    like = models.OneToOneField(to=LikeRecord, on_delete=models.CASCADE, default=None, null=True, blank=True)
     def __str__(self) -> str:
         return self.topic
 

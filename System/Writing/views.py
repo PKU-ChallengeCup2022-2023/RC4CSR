@@ -1,11 +1,13 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.contrib.auth.models import User
 import datetime
 
 from .models import Pencraft, Chapter
 from Account.models import PlatformUser
+from Discussion.models import LikeRecord
+
 
 @login_required(redirect_field_name='login')
 def index(request):
@@ -42,6 +44,7 @@ def author(request, username):
                 description=description,
                 pub_date=datetime.datetime.today(),
                 author=PlatformUser.objects.get(uid=request.user),
+                like = LikeRecord.objects.create()
             )
             err_msg = "发布成功！"
         except:
@@ -78,3 +81,18 @@ def update(request, username):
             return render(request, 'Writing/update.html', locals())
         
     return render(request, 'Writing/update.html', locals())
+
+@login_required(redirect_field_name='login')
+def Like(request, pencraft_id):
+    platform_user = PlatformUser.objects.get(uid=request.user)
+    pencraft = get_object_or_404(Pencraft, pk=pencraft_id)
+    user_list = pencraft.like.like_users.all()
+    if platform_user in user_list:
+        pencraft.like.like_num -= 1
+        pencraft.like.like_users.remove(platform_user)
+    else:
+        pencraft.like.like_num += 1
+        pencraft.like.like_users.add(platform_user)
+    pencraft.like.save()
+    pencraft.save()
+    return HttpResponseRedirect("/writing/")
