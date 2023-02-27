@@ -14,8 +14,8 @@
     <li>reply to: {{ record.reply_to.summary }}</li>
     {% endif %}
     <h4>{{ record.content }}</h4>
-    <a href="{% url 'like' record.id %}" class="button info" role="button">点赞：{{ record.like.like_num }}</a>
-    <!--button class="button info"><li><a href="{% url 'like' record.id %}">likes: {{ record.like.like_num }}</a></li></button>-->
+    <a href="{% url 'discussion:like' record.id %}" class="button info" role="button">点赞：{{ record.like.like_num }}</a>
+    <!--button class="button info"><li><a href="{% url 'discussion:like' record.id %}">likes: {{ record.like.like_num }}</a></li></button>-->
     </div>
 {% endfor %}
 <form method="post">{% csrf_token %}
