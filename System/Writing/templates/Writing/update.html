@@ -11,7 +11,7 @@
     <ul>
         <div class="panel callout">
     {% for pencraft in pencraft_list %}
-        <li><a href="{% url 'pencraft' pencraft.id %}">{{ pencraft.topic }}</a></li>
+        <li><a href="{% url 'writing:pencraft' pencraft.id %}">{{ pencraft.topic }}</a></li>
         <input type="radio" name="collection" value={{pencraft.id}}>{{ pencraft.topic }}<br>
     {% endfor %}
         </div>
