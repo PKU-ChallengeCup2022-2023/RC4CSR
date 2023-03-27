@@ -7,7 +7,7 @@
     {% for pencraft in pencraft_list %}
     <div class="panel callout">
         <!-- <li><a href="/writing/{{ pencraft.id }}/">{{ pencraft.topic }}</a></li> hard coded -->
-        <li><a href="{% url 'pencraft' pencraft.id %}">{{ pencraft.topic }}</a></li>
+        <li><a href="{% url 'writing:pencraft' pencraft.id %}">{{ pencraft.topic }}</a></li>
         <h5>更新日期：{{pencraft.pub_date}}</h5>
         简介：{{pencraft.description}}
     </div>
